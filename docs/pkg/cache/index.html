@@ -174,7 +174,7 @@
 		
 			
 			
-			<h2 id="MemcachedCache">type <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=2429:2879#L58">MemcachedCache</a>
+			<h2 id="MemcachedCache">type <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=2487:2937#L59">MemcachedCache</a>
 				<a class="permalink" href="index.html#MemcachedCache">&#xb6;</a>
 				
 				
@@ -215,23 +215,25 @@ References:
 <p>
 Example:
 </p>
-<pre>cache := NewMemcachedCache();
-cache.Configure(cconf.NewConfigParamsFromTuples(
-  &#34;host&#34;, &#34;localhost&#34;,
-  &#34;port&#34;, 11211,
-));
+<pre>	ctx := context.Background()
 
-err := cache.Open(&#34;123&#34;)
-  ...
+    cache := NewMemcachedCache[string]();
+    cache.Configure(ctx, cconf.NewConfigParamsFromTuples(
+      &#34;host&#34;, &#34;localhost&#34;,
+      &#34;port&#34;, 11211,
+    ));
 
-ret, err := cache.Store(&#34;123&#34;, &#34;key1&#34;, []byte(&#34;ABC&#34;))
-if err != nil {
-	...
-}
+    err := cache.Open(ctx, &#34;123&#34;)
+      ...
 
-res, err := cache.Retrive(&#34;123&#34;, &#34;key1&#34;)
-value, _ := res.([]byte)
-fmt.Println(string(value))     // Result: &#34;ABC&#34;
+    ret, err := cache.Store(ctx, &#34;123&#34;, &#34;key1&#34;, []byte(&#34;ABC&#34;))
+    if err != nil {
+    	...
+    }
+
+    res, err := cache.Retrive(ctx, &#34;123&#34;, &#34;key1&#34;)
+    value, _ := res.([]byte)
+    fmt.Println(string(value))     // Result: &#34;ABC&#34;
 </pre>
 
 			<pre>type MemcachedCache[T <a href="http://localhost:6060/pkg/builtin/#any">any</a>] struct {
@@ -249,7 +251,7 @@ fmt.Println(string(value))     // Result: &#34;ABC&#34;
 
 			
 				
-				<h3 id="NewMemcachedCache">func <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=2954:3004#L77">NewMemcachedCache</a>
+				<h3 id="NewMemcachedCache">func <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=3012:3062#L78">NewMemcachedCache</a>
 					<a class="permalink" href="index.html#NewMemcachedCache">&#xb6;</a>
 					
 					
@@ -265,7 +267,7 @@ NewMemcachedCache method are creates a new instance of this cache.
 
 			
 				
-				<h3 id="MemcachedCache.Close">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=6848:6930#L184">Close</a>
+				<h3 id="MemcachedCache.Close">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=6906:6988#L185">Close</a>
 					<a class="permalink" href="index.html#MemcachedCache.Close">&#xb6;</a>
 					
 					
@@ -287,7 +289,7 @@ Retruns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="MemcachedCache.Configure">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=3666:3752#L100">Configure</a>
+				<h3 id="MemcachedCache.Configure">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=3724:3810#L101">Configure</a>
 					<a class="permalink" href="index.html#MemcachedCache.Configure">&#xb6;</a>
 					
 					
@@ -305,7 +307,7 @@ Configure method are configures component by passing configuration parameters.
 				
 			
 				
-				<h3 id="MemcachedCache.Contains">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=9828:9924#L280">Contains</a>
+				<h3 id="MemcachedCache.Contains">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=9886:9982#L281">Contains</a>
 					<a class="permalink" href="index.html#MemcachedCache.Contains">&#xb6;</a>
 					
 					
@@ -325,7 +327,7 @@ Parameters:
 				
 			
 				
-				<h3 id="MemcachedCache.IsOpen">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=5193:5234#L127">IsOpen</a>
+				<h3 id="MemcachedCache.IsOpen">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=5251:5292#L128">IsOpen</a>
 					<a class="permalink" href="index.html#MemcachedCache.IsOpen">&#xb6;</a>
 					
 					
@@ -341,7 +343,7 @@ Returns true if the component has been opened and false otherwise.
 				
 			
 				
-				<h3 id="MemcachedCache.Open">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=5486:5567#L136">Open</a>
+				<h3 id="MemcachedCache.Open">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=5544:5625#L137">Open</a>
 					<a class="permalink" href="index.html#MemcachedCache.Open">&#xb6;</a>
 					
 					
@@ -363,7 +365,7 @@ Retruns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="MemcachedCache.Remove">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=9318:9413#L261">Remove</a>
+				<h3 id="MemcachedCache.Remove">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=9376:9471#L262">Remove</a>
 					<a class="permalink" href="index.html#MemcachedCache.Remove">&#xb6;</a>
 					
 					
@@ -386,7 +388,7 @@ Retruns: an error or nil for success
 				
 			
 				
-				<h3 id="MemcachedCache.Retrieve">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=7579:7691#L205">Retrieve</a>
+				<h3 id="MemcachedCache.Retrieve">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=7637:7749#L206">Retrieve</a>
 					<a class="permalink" href="index.html#MemcachedCache.Retrieve">&#xb6;</a>
 					
 					
@@ -408,7 +410,7 @@ Retruns: cached value or error.
 				
 			
 				
-				<h3 id="MemcachedCache.SetReferences">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=4880:4971#L120">SetReferences</a>
+				<h3 id="MemcachedCache.SetReferences">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=4938:5029#L121">SetReferences</a>
 					<a class="permalink" href="index.html#MemcachedCache.SetReferences">&#xb6;</a>
 					
 					
@@ -426,7 +428,7 @@ SetReferences are sets references to dependent components.
 				
 			
 				
-				<h3 id="MemcachedCache.Store">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=8489:8623#L233">Store</a>
+				<h3 id="MemcachedCache.Store">func (*MemcachedCache[T]) <a href="http://localhost:6060/src/cache/MemcachedCache.go?s=8547:8681#L234">Store</a>
 					<a class="permalink" href="index.html#MemcachedCache.Store">&#xb6;</a>
 					
 					

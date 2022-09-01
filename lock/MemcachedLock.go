@@ -43,23 +43,24 @@ References:
 - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
 
 Example:
+	ctx := context.Background()
 
-    lock := NewMemcachedLock();
-    lock.Configure(cconf.NewConfigParamsFromTuples(
+    lock := NewMemcachedLock[string]();
+    lock.Configure(ctx, cconf.NewConfigParamsFromTuples(
       "host", "localhost",
       "port", 11211,
     ));
 
-    err := lock.Open("123")
+    err := lock.Open(ctx, "123")
     if err != nil {
       ...
     }
 
-    result, err := lock.TryAcquireLock("123", "key1", 3000)
+    result, err := lock.TryAcquireLock(ctx, "123", "key1", 3000)
     if result {
     	// Processing...
     }
-    err = lock.ReleaseLock("123", "key1")
+    err = lock.ReleaseLock(ctx, "123", "key1")
     // Continue...
 */
 type MemcachedLock struct {

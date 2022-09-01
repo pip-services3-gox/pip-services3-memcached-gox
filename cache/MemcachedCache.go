@@ -44,23 +44,24 @@ References:
 - *:discovery:*:*:1.0    (optional) IDiscovery services to resolve connection
 
 Example:
+	ctx := context.Background()
 
-    cache := NewMemcachedCache();
-    cache.Configure(cconf.NewConfigParamsFromTuples(
+    cache := NewMemcachedCache[string]();
+    cache.Configure(ctx, cconf.NewConfigParamsFromTuples(
       "host", "localhost",
       "port", 11211,
     ));
 
-    err := cache.Open("123")
+    err := cache.Open(ctx, "123")
       ...
 
 
-    ret, err := cache.Store("123", "key1", []byte("ABC"))
+    ret, err := cache.Store(ctx, "123", "key1", []byte("ABC"))
     if err != nil {
     	...
     }
 
-    res, err := cache.Retrive("123", "key1")
+    res, err := cache.Retrive(ctx, "123", "key1")
     value, _ := res.([]byte)
     fmt.Println(string(value))     // Result: "ABC"
 

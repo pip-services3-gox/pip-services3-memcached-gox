@@ -168,7 +168,7 @@
 		
 			
 			
-			<h2 id="MemcachedLock">type <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2309:2696#L55">MemcachedLock</a>
+			<h2 id="MemcachedLock">type <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2367:2754#L56">MemcachedLock</a>
 				<a class="permalink" href="index.html#MemcachedLock">&#xb6;</a>
 				
 				
@@ -214,23 +214,25 @@ References:
 <p>
 Example:
 </p>
-<pre>lock := NewMemcachedLock();
-lock.Configure(cconf.NewConfigParamsFromTuples(
-  &#34;host&#34;, &#34;localhost&#34;,
-  &#34;port&#34;, 11211,
-));
+<pre>	ctx := context.Background()
 
-err := lock.Open(&#34;123&#34;)
-if err != nil {
-  ...
-}
+    lock := NewMemcachedLock[string]();
+    lock.Configure(ctx, cconf.NewConfigParamsFromTuples(
+      &#34;host&#34;, &#34;localhost&#34;,
+      &#34;port&#34;, 11211,
+    ));
 
-result, err := lock.TryAcquireLock(&#34;123&#34;, &#34;key1&#34;, 3000)
-if result {
-	// Processing...
-}
-err = lock.ReleaseLock(&#34;123&#34;, &#34;key1&#34;)
-// Continue...
+    err := lock.Open(ctx, &#34;123&#34;)
+    if err != nil {
+      ...
+    }
+
+    result, err := lock.TryAcquireLock(ctx, &#34;123&#34;, &#34;key1&#34;, 3000)
+    if result {
+    	// Processing...
+    }
+    err = lock.ReleaseLock(ctx, &#34;123&#34;, &#34;key1&#34;)
+    // Continue...
 </pre>
 
 			<pre>type MemcachedLock struct {
@@ -249,7 +251,7 @@ err = lock.ReleaseLock(&#34;123&#34;, &#34;key1&#34;)
 
 			
 				
-				<h3 id="NewMemcachedLock">func <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2769:2807#L73">NewMemcachedLock</a>
+				<h3 id="NewMemcachedLock">func <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2827:2865#L74">NewMemcachedLock</a>
 					<a class="permalink" href="index.html#NewMemcachedLock">&#xb6;</a>
 					
 					
@@ -265,7 +267,7 @@ NewMemcachedLock method are creates a new instance of this lock.
 
 			
 				
-				<h3 id="MemcachedLock.Close">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=6617:6695#L180">Close</a>
+				<h3 id="MemcachedLock.Close">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=6675:6753#L181">Close</a>
 					<a class="permalink" href="index.html#MemcachedLock.Close">&#xb6;</a>
 					
 					
@@ -285,7 +287,7 @@ Parameters:
 				
 			
 				
-				<h3 id="MemcachedLock.Configure">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=3434:3516#L96">Configure</a>
+				<h3 id="MemcachedLock.Configure">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=3492:3574#L97">Configure</a>
 					<a class="permalink" href="index.html#MemcachedLock.Configure">&#xb6;</a>
 					
 					
@@ -303,7 +305,7 @@ Configure method are configures component by passing configuration parameters.
 				
 			
 				
-				<h3 id="MemcachedLock.IsOpen">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4930:4967#L123">IsOpen</a>
+				<h3 id="MemcachedLock.IsOpen">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4988:5025#L124">IsOpen</a>
 					<a class="permalink" href="index.html#MemcachedLock.IsOpen">&#xb6;</a>
 					
 					
@@ -319,7 +321,7 @@ Returns: true if the component has been opened and false otherwise.
 				
 			
 				
-				<h3 id="MemcachedLock.Open">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=5220:5297#L132">Open</a>
+				<h3 id="MemcachedLock.Open">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=5278:5355#L133">Open</a>
 					<a class="permalink" href="index.html#MemcachedLock.Open">&#xb6;</a>
 					
 					
@@ -341,7 +343,7 @@ Retruns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="MemcachedLock.ReleaseLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=8222:8318#L229">ReleaseLock</a>
+				<h3 id="MemcachedLock.ReleaseLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=8280:8376#L230">ReleaseLock</a>
 					<a class="permalink" href="index.html#MemcachedLock.ReleaseLock">&#xb6;</a>
 					
 					
@@ -361,7 +363,7 @@ Returns error or nil for success.
 				
 			
 				
-				<h3 id="MemcachedLock.SetReferences">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4651:4738#L117">SetReferences</a>
+				<h3 id="MemcachedLock.SetReferences">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4709:4796#L118">SetReferences</a>
 					<a class="permalink" href="index.html#MemcachedLock.SetReferences">&#xb6;</a>
 					
 					
@@ -379,7 +381,7 @@ SetReferences method are sets references to dependent components.
 				
 			
 				
-				<h3 id="MemcachedLock.TryAcquireLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=7428:7557#L202">TryAcquireLock</a>
+				<h3 id="MemcachedLock.TryAcquireLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=7486:7615#L203">TryAcquireLock</a>
 					<a class="permalink" href="index.html#MemcachedLock.TryAcquireLock">&#xb6;</a>
 					
 					
