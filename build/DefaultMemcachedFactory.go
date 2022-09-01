@@ -1,10 +1,10 @@
 package build
 
 import (
-	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
-	cbuild "github.com/pip-services3-go/pip-services3-components-go/build"
-	memcache "github.com/pip-services3-go/pip-services3-memcached-go/cache"
-	memlock "github.com/pip-services3-go/pip-services3-memcached-go/lock"
+	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
+	cbuild "github.com/pip-services3-gox/pip-services3-components-gox/build"
+	memcache "github.com/pip-services3-gox/pip-services3-memcached-gox/cache"
+	memlock "github.com/pip-services3-gox/pip-services3-memcached-gox/lock"
 )
 
 // DefaultMemcachedFactory Creates Redis components by their descriptors.
@@ -26,7 +26,7 @@ func NewDefaultMemcachedFactory() *DefaultMemcachedFactory {
 	c.MemcachedCacheDescriptor = cref.NewDescriptor("pip-services", "cache", "memcached", "*", "1.0")
 	c.MemcachedLockDescriptor = cref.NewDescriptor("pip-services", "lock", "memcached", "*", "1.0")
 
-	c.RegisterType(c.MemcachedCacheDescriptor, memcache.NewMemcachedCache)
+	c.RegisterType(c.MemcachedCacheDescriptor, memcache.NewMemcachedCache[any])
 	c.RegisterType(c.MemcachedLockDescriptor, memlock.NewMemcachedLock)
 	return &c
 }

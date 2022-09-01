@@ -1,16 +1,19 @@
 package test_cache
 
 import (
+	"context"
 	"os"
 	"testing"
 
-	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	memcache "github.com/pip-services3-go/pip-services3-memcached-go/cache"
-	memfixture "github.com/pip-services3-go/pip-services3-memcached-go/test/fixture"
+	cconf "github.com/pip-services3-gox/pip-services3-commons-gox/config"
+	memcache "github.com/pip-services3-gox/pip-services3-memcached-gox/cache"
+	memfixture "github.com/pip-services3-gox/pip-services3-memcached-gox/test/fixture"
 )
 
 func TestMemcachedCache(t *testing.T) {
-	var cache *memcache.MemcachedCache
+	ctx := context.Background()
+
+	var cache *memcache.MemcachedCache[any]
 	var fixture *memfixture.CacheFixture
 
 	host := os.Getenv("MEMCACHED_SERVICE_HOST")
@@ -23,15 +26,15 @@ func TestMemcachedCache(t *testing.T) {
 		port = "11211"
 	}
 
-	cache = memcache.NewMemcachedCache()
+	cache = memcache.NewMemcachedCache[any]()
 	config := cconf.NewConfigParamsFromTuples(
 		"connection.host", host,
 		"connection.port", port,
 	)
-	cache.Configure(config)
+	cache.Configure(ctx, config)
 	fixture = memfixture.NewCacheFixture(cache)
-	cache.Open("")
-	defer cache.Close("")
+	cache.Open(ctx, "")
+	defer cache.Close(ctx, "")
 
 	t.Run("TestMemcachedCache:Store and Retrieve", fixture.TestStoreAndRetrieve)
 	t.Run("TestMemcachedCache:Retrieve Expired", fixture.TestRetrieveExpired)

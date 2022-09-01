@@ -1,10 +1,17 @@
-module github.com/pip-services3-go/pip-services3-memcached-go
+module github.com/pip-services3-gox/pip-services3-memcached-gox
 
-go 1.16
+go 1.18
 
 require (
-	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
-	github.com/pip-services3-go/pip-services3-commons-go v1.1.0
-	github.com/pip-services3-go/pip-services3-components-go v1.1.0
-	github.com/stretchr/testify v1.7.0
+	github.com/bradfitz/gomemcache v0.0.0-20220106215444-fb4bf637b56d
+	github.com/pip-services3-gox/pip-services3-commons-gox v1.0.5
+	github.com/pip-services3-gox/pip-services3-components-gox v1.0.6
+	github.com/stretchr/testify v1.8.0
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

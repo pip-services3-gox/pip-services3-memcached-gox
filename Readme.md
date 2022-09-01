@@ -5,14 +5,14 @@ This module is a part of the [Pip.Services](http://pipservices.org) polyglot mic
 The Memcached module contains the following components: MemcachedLock and MemcachedCache for working with locks and cache on the Memcached server.
 
 The module contains the following packages:
-- [**Build**](https://godoc.org/github.com/pip-services3-go/pip-services3-memcached-go/build) - a standard factory for constructing components
-- [**Cache**](https://godoc.org/github.com/pip-services3-go/pip-services3-memcached-go/cache) - cache Components in Memcached
-- [**Lock**](https://godoc.org/github.com/pip-services3-go/pip-services3-memcached-go/lock) - components of working with locks in Memcached
+- [**Build**](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/build) - a standard factory for constructing components
+- [**Cache**](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/cache) - cache Components in Memcached
+- [**Lock**](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/lock) - components of working with locks in Memcached
 
 <a name="links"></a> Quick links:
 
 * [Configuration](https://www.pipservices.org/recipies/configuration)
-* [API Reference](https://godoc.org/github.com/pip-services3-go/pip-services3-memcached-go/)
+* [API Reference](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/)
 * [Change Log](CHANGELOG.md)
 * [Get Help](https://www.pipservices.org/community/help)
 * [Contribute](https://www.pipservices.org/community/contribute)
@@ -22,13 +22,13 @@ The module contains the following packages:
 
 Get the package from the Github repository:
 ```bash
-go get -u github.com/pip-services3-go/pip-services3-memcached-go@latest
+go get -u github.com/pip-services3-gox/pip-services3-memcached-gox@latest
 ```
 
 ## Develop
 
 For development you shall install the following prerequisites:
-* Golang v1.12+
+* Golang v1.18+
 * Visual Studio Code or another IDE of your choice
 * Docker
 * Git
@@ -51,7 +51,7 @@ Before committing changes run dockerized test as:
 
 ## Contacts
 
-The library is created and maintained by **Sergey Seroukhov** and **Levichev Dmitry**.
+The library is created and maintained by **Sergey Seroukhov**, **Levichev Dmitry** and **Danil Prisiazhnyi**.
 
 The documentation is written by:
 - **Levichev Dmitry**

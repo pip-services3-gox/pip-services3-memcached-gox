@@ -1,17 +1,20 @@
 package test_lock
 
 import (
+	"context"
 	"os"
 	"testing"
 
-	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	memlock "github.com/pip-services3-go/pip-services3-memcached-go/lock"
-	memfixture "github.com/pip-services3-go/pip-services3-memcached-go/test/fixture"
+	cconf "github.com/pip-services3-gox/pip-services3-commons-gox/config"
+	memlock "github.com/pip-services3-gox/pip-services3-memcached-gox/lock"
+	memfixture "github.com/pip-services3-gox/pip-services3-memcached-gox/test/fixture"
 )
 
 func TestMemcachedLock(t *testing.T) {
 	var lock *memlock.MemcachedLock
 	var fixture *memfixture.LockFixture
+
+	ctx := context.Background()
 
 	host := os.Getenv("MEMCACHED_SERVICE_HOST")
 	if host == "" {
@@ -29,11 +32,11 @@ func TestMemcachedLock(t *testing.T) {
 		"connection.host", host,
 		"connection.port", port,
 	)
-	lock.Configure(config)
+	lock.Configure(ctx, config)
 	fixture = memfixture.NewLockFixture(lock)
 
-	lock.Open("")
-	defer lock.Close("")
+	lock.Open(ctx, "")
+	defer lock.Close(ctx, "")
 
 	t.Run("Try Acquire Lock", fixture.TestTryAcquireLock)
 	t.Run("Acquire Lock", fixture.TestAcquireLock)

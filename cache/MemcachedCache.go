@@ -1,15 +1,17 @@
 package cache
 
 import (
-	"encoding/json"
+	"context"
 	"strconv"
 	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
-	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	cerr "github.com/pip-services3-go/pip-services3-commons-go/errors"
-	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
-	ccon "github.com/pip-services3-go/pip-services3-components-go/connect"
+	cconf "github.com/pip-services3-gox/pip-services3-commons-gox/config"
+	cconv "github.com/pip-services3-gox/pip-services3-commons-gox/convert"
+	cerr "github.com/pip-services3-gox/pip-services3-commons-gox/errors"
+	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
+	ccon "github.com/pip-services3-gox/pip-services3-components-gox/connect"
+	clog "github.com/pip-services3-gox/pip-services3-components-gox/log"
 )
 
 /*
@@ -63,7 +65,7 @@ Example:
     fmt.Println(string(value))     // Result: "ABC"
 
 */
-type MemcachedCache struct {
+type MemcachedCache[T any] struct {
 	connectionResolver *ccon.ConnectionResolver
 	// maxKeySize         int
 	// maxExpiration      int64
@@ -76,12 +78,14 @@ type MemcachedCache struct {
 	// retry              int
 	remove bool
 	//idle   int
-	client *memcache.Client
+	client    *memcache.Client
+	convertor cconv.IJSONEngine[T]
+	logger    clog.CompositeLogger
 }
 
 // NewMemcachedCache method are creates a new instance of this cache.
-func NewMemcachedCache() *MemcachedCache {
-	c := &MemcachedCache{
+func NewMemcachedCache[T any]() *MemcachedCache[T] {
+	c := &MemcachedCache[T]{
 		connectionResolver: ccon.NewEmptyConnectionResolver(),
 		// maxKeySize:         250,
 		// maxExpiration:      2592000,
@@ -94,17 +98,18 @@ func NewMemcachedCache() *MemcachedCache {
 		// retry:              30000,
 		remove: false,
 		//idle:   5000,
-		client: nil,
+		client:    nil,
+		convertor: cconv.NewDefaultCustomTypeJsonConvertor[T](),
 	}
 	return c
 }
 
-/*
-   Configures component by passing configuration parameters.
-   - config    configuration parameters to be set.
-*/
-func (c *MemcachedCache) Configure(config *cconf.ConfigParams) {
-	c.connectionResolver.Configure(config)
+// Configure method are configures component by passing configuration parameters.
+// 	 - ctx context.Context
+//   - config    configuration parameters to be set.
+func (c *MemcachedCache[T]) Configure(ctx context.Context, config *cconf.ConfigParams) {
+	c.connectionResolver.Configure(ctx, config)
+	c.logger.Configure(ctx, config)
 
 	// c.maxKeySize = config.GetAsIntegerWithDefault("options.max_key_size", c.maxKeySize)
 	// c.maxExpiration = config.GetAsLongWithDefault("options.max_expiration", c.maxExpiration)
@@ -120,22 +125,25 @@ func (c *MemcachedCache) Configure(config *cconf.ConfigParams) {
 }
 
 // SetReferences are sets references to dependent components.
+// 	 - ctx context.Context
 //   - references 	references to locate the component dependencies.
-func (c *MemcachedCache) SetReferences(references cref.IReferences) {
-	c.connectionResolver.SetReferences(references)
+func (c *MemcachedCache[T]) SetReferences(ctx context.Context, references cref.IReferences) {
+	c.connectionResolver.SetReferences(ctx, references)
+	c.logger.SetReferences(ctx, references)
 }
 
 // IsOpen Checks if the component is opened.
 // Returns true if the component has been opened and false otherwise.
-func (c *MemcachedCache) IsOpen() bool {
+func (c *MemcachedCache[T]) IsOpen() bool {
 	return c.client != nil
 }
 
 // Open method are opens the component.
 // Parameters:
+// 	 - ctx context.Context
 //   - correlationId 	(optional) transaction id to trace execution through call chain.
 // Retruns: error or nil no errors occured.
-func (c *MemcachedCache) Open(correlationId string) error {
+func (c *MemcachedCache[T]) Open(ctx context.Context, correlationId string) error {
 	connections, err := c.connectionResolver.ResolveAll(correlationId)
 
 	if err == nil && len(connections) == 0 {
@@ -180,14 +188,15 @@ func (c *MemcachedCache) Open(correlationId string) error {
 
 // Close method are closes component and frees used resources.
 // Parameters:
-// - correlationId 	(optional) transaction id to trace execution through call chain.
-// - callback 			callback function that receives error or nil no errors occured.
-func (c *MemcachedCache) Close(correlationId string) error {
+//   - ctx context.Context
+//   - correlationId 	(optional) transaction id to trace execution through call chain.
+// Retruns: error or nil no errors occured.
+func (c *MemcachedCache[T]) Close(ctx context.Context, correlationId string) error {
 	c.client = nil
 	return nil
 }
 
-func (c *MemcachedCache) checkOpened(correlationId string) (state bool, err error) {
+func (c *MemcachedCache[T]) checkOpened(correlationId string) (state bool, err error) {
 	if !c.IsOpen() {
 		err = cerr.NewInvalidStateError(correlationId, "NOT_OPENED", "Connection is not opened")
 		return false, err
@@ -199,91 +208,55 @@ func (c *MemcachedCache) checkOpened(correlationId string) (state bool, err erro
 // Retrieve method are retrieves cached value from the cache using its key.
 // If value is missing in the cache or expired it returns nil.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId     (optional) transaction id to trace execution through call chain.
 //   - key               a unique value key.
-// Retruns value *memcache.Item, err error
-// cached value or error.
-func (c *MemcachedCache) Retrieve(correlationId string, key string) (value interface{}, err error) {
-	state, err := c.checkOpened(correlationId)
-	if !state {
-		return nil, err
+//  Retruns: cached value or error.
+func (c *MemcachedCache[T]) Retrieve(ctx context.Context, correlationId string, key string) (value T, err error) {
+	var defaultValue T
+
+	if state, err := c.checkOpened(correlationId); !state {
+		return defaultValue, err
 	}
 	item, err := c.client.Get(key)
 	if err != nil && err == memcache.ErrCacheMiss {
 		err = nil
 	}
 	if item != nil {
-		var value interface{}
-		err := json.Unmarshal(item.Value, &value)
+		value, err := c.convertor.FromJson(string(item.Value))
 		if err != nil {
-			return nil, err
+			return defaultValue, err
 		}
 		return value, nil
 	}
-	return nil, err
-}
-
-// Retrieve method are retrieves cached value from the cache using its key.
-// If value is missing in the cache or expired it returns nil.
-// Parameters:
-//   - correlationId     (optional) transaction id to trace execution through call chain.
-//   - key               a unique value key.
-// Retruns value *memcache.Item, err error
-// cached value or error.
-func (c *MemcachedCache) RetrieveAs(correlationId string, key string, result interface{}) (value interface{}, err error) {
-	state, err := c.checkOpened(correlationId)
-	if !state {
-		return nil, err
-	}
-	item, err := c.client.Get(key)
-	if err != nil && err == memcache.ErrCacheMiss {
-		err = nil
-	}
-	if item != nil {
-		err = json.Unmarshal(item.Value, result)
-		if err != nil {
-			return nil, err
-		}
-		return result, nil
-	}
-	return nil, err
+	return defaultValue, err
 }
 
 // Store method are stores value in the cache with expiration time.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId     (optional) transaction id to trace execution through call chain.
 //   - key               a unique value key.
 //   - value             a value to store.
 //   - timeout           expiration timeout in milliseconds.
 // Returns: error or nil for success
-func (c *MemcachedCache) Store(correlationId string, key string, value interface{}, timeout int64) (result interface{}, err error) {
-	state, err := c.checkOpened(correlationId)
-	if !state {
-		return nil, err
+func (c *MemcachedCache[T]) Store(ctx context.Context, correlationId string, key string, value T, timeout int64) (result T, err error) {
+	var defaultValue T
+
+	if state, err := c.checkOpened(correlationId); !state {
+		return defaultValue, err
 	}
+
 	timeoutInSec := int32(timeout) / 1000
 
-	var val []byte
-
-	switch v := value.(type) {
-	case []byte:
-		val = v
-		break
-	case string:
-		val, err = json.Marshal(v)
-		break
-	default:
-		val, err = json.Marshal(v)
-		break
-	}
-
+	jsonVal, err := c.convertor.ToJson(value)
 	if err != nil {
-		return nil, err
+		return defaultValue, err
 	}
 
 	item := memcache.Item{
 		Key:        key,
-		Value:      val,
+		Value:      []byte(jsonVal),
 		Expiration: timeoutInSec,
 	}
 	return value, c.client.Set(&item)
@@ -291,17 +264,39 @@ func (c *MemcachedCache) Store(correlationId string, key string, value interface
 
 // Remove method are removes a value from the cache by its key.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId     (optional) transaction id to trace execution through call chain.
 //   - key               a unique value key.
 // Retruns: an error or nil for success
-func (c *MemcachedCache) Remove(correlationId string, key string) error {
+func (c *MemcachedCache[T]) Remove(ctx context.Context, correlationId string, key string) error {
 	state, err := c.checkOpened(correlationId)
+
 	if !state {
 		return err
 	}
+
 	err = c.client.Delete(key)
 	if err != nil && err == memcache.ErrCacheMiss {
 		err = nil
 	}
 	return err
+}
+
+// Contains check is value stores
+// Parameters:
+//   - ctx context.Context
+//   - correlationId     (optional) transaction id to trace execution through call chain.
+//   - key               a unique value key.
+func (c *MemcachedCache[T]) Contains(ctx context.Context, correlationId string, key string) bool {
+	state, err := c.checkOpened(correlationId)
+	if !state {
+		c.logger.Error(ctx, correlationId, err, "Connection is not opened")
+		return false
+	}
+
+	if _, err := c.client.Get(key); err != nil {
+		return false
+	}
+
+	return true
 }

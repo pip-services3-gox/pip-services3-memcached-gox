@@ -1,15 +1,16 @@
 package lock
 
 import (
+	"context"
 	"strconv"
 	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
-	cconf "github.com/pip-services3-go/pip-services3-commons-go/config"
-	cerr "github.com/pip-services3-go/pip-services3-commons-go/errors"
-	cref "github.com/pip-services3-go/pip-services3-commons-go/refer"
-	ccon "github.com/pip-services3-go/pip-services3-components-go/connect"
-	clock "github.com/pip-services3-go/pip-services3-components-go/lock"
+	cconf "github.com/pip-services3-gox/pip-services3-commons-gox/config"
+	cerr "github.com/pip-services3-gox/pip-services3-commons-gox/errors"
+	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
+	ccon "github.com/pip-services3-gox/pip-services3-components-gox/connect"
+	clock "github.com/pip-services3-gox/pip-services3-components-gox/lock"
 )
 
 /*
@@ -100,11 +101,12 @@ func NewMemcachedLock() *MemcachedLock {
 }
 
 // Configure method are configures component by passing configuration parameters.
+//   - ctx context.Context
 //   - config    configuration parameters to be set.
-func (c *MemcachedLock) Configure(config *cconf.ConfigParams) {
-	c.Lock.Configure(config)
+func (c *MemcachedLock) Configure(ctx context.Context, config *cconf.ConfigParams) {
+	c.Lock.Configure(ctx, config)
 
-	c.connectionResolver.Configure(config)
+	c.connectionResolver.Configure(ctx, config)
 
 	// c.maxKeySize = config.GetAsIntegerWithDefault("options.max_key_size", c.maxKeySize)
 	// c.maxExpiration = config.GetAsLongWithDefault("options.max_expiration", c.maxExpiration)
@@ -120,9 +122,10 @@ func (c *MemcachedLock) Configure(config *cconf.ConfigParams) {
 }
 
 // SetReferences method are sets references to dependent components.
+//   - ctx context.Context
 //   - references 	references to locate the component dependencies.
-func (c *MemcachedLock) SetReferences(references cref.IReferences) {
-	c.connectionResolver.SetReferences(references)
+func (c *MemcachedLock) SetReferences(ctx context.Context, references cref.IReferences) {
+	c.connectionResolver.SetReferences(ctx, references)
 }
 
 // IsOpen method are checks if the component is opened.
@@ -133,9 +136,10 @@ func (c *MemcachedLock) IsOpen() bool {
 
 /// Open method are opens the component.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId 	(optional) transaction id to trace execution through call chain.
 // Retruns: error or nil no errors occured.
-func (c *MemcachedLock) Open(correlationId string) error {
+func (c *MemcachedLock) Open(ctx context.Context, correlationId string) error {
 	connections, err := c.connectionResolver.ResolveAll(correlationId)
 
 	if err == nil && len(connections) == 0 {
@@ -180,9 +184,10 @@ func (c *MemcachedLock) Open(correlationId string) error {
 
 // Close method are closes component and frees used resources.
 // Parameters:
+//   - ctx context.Context
 //   - correlationId 	(optional) transaction id to trace execution through call chain.
 //   - callback 			callback function that receives error or nil no errors occured.
-func (c *MemcachedLock) Close(correlationId string) error {
+func (c *MemcachedLock) Close(ctx context.Context, correlationId string) error {
 	c.client = nil
 	return nil
 }
@@ -199,11 +204,12 @@ func (c *MemcachedLock) checkOpened(correlationId string) (state bool, err error
 // TryAcquireLock method are makes a single attempt to acquire a lock by its key.
 // It returns immediately a positive or negative result.
 // Parameters:
+//    - ctx context.Context
 //    - correlationId     (optional) transaction id to trace execution through call chain.
 //    - key               a unique lock key to acquire.
 //    - ttl               a lock timeout (time to live) in milliseconds.
 //  Returns: a lock result or error.
-func (c *MemcachedLock) TryAcquireLock(correlationId string, key string, ttl int64) (result bool, err error) {
+func (c *MemcachedLock) TryAcquireLock(ctx context.Context, correlationId string, key string, ttl int64) (result bool, err error) {
 
 	state, err := c.checkOpened(correlationId)
 	if !state {
@@ -226,10 +232,11 @@ func (c *MemcachedLock) TryAcquireLock(correlationId string, key string, ttl int
 }
 
 // ReleaseLock method are releases prevously acquired lock by its key.
+//    - ctx context.Context
 //    - correlationId     (optional) transaction id to trace execution through call chain.
 //    - key               a unique lock key to release.
 //  Returns error or nil for success.
-func (c *MemcachedLock) ReleaseLock(correlationId string, key string) error {
+func (c *MemcachedLock) ReleaseLock(ctx context.Context, correlationId string, key string) error {
 	state, err := c.checkOpened(correlationId)
 	if !state {
 		return err

@@ -14,7 +14,7 @@
 
 
 
-<script>var goVersion = "go1.13.15";</script>
+<script>var goVersion = "go1.18.5";</script>
 <script src="../../lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -120,25 +120,25 @@
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.Close">func (c *MemcachedLock) Close(correlationId string) error</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.Close">func (c *MemcachedLock) Close(ctx context.Context, correlationId string) error</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.Configure">func (c *MemcachedLock) Configure(config *cconf.ConfigParams)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.Configure">func (c *MemcachedLock) Configure(ctx context.Context, config *cconf.ConfigParams)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.IsOpen">func (c *MemcachedLock) IsOpen() bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.Open">func (c *MemcachedLock) Open(correlationId string) error</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.Open">func (c *MemcachedLock) Open(ctx context.Context, correlationId string) error</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.ReleaseLock">func (c *MemcachedLock) ReleaseLock(correlationId string, key string) error</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.ReleaseLock">func (c *MemcachedLock) ReleaseLock(ctx context.Context, correlationId string, key string) error</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.SetReferences">func (c *MemcachedLock) SetReferences(references cref.IReferences)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.SetReferences">func (c *MemcachedLock) SetReferences(ctx context.Context, references cref.IReferences)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.TryAcquireLock">func (c *MemcachedLock) TryAcquireLock(correlationId string, key string, ttl int64) (result bool, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="index.html#MemcachedLock.TryAcquireLock">func (c *MemcachedLock) TryAcquireLock(ctx context.Context, correlationId string, key string, ttl int64) (result bool, err error)</a></dd>
 				
 			
 			
@@ -168,7 +168,7 @@
 		
 			
 			
-			<h2 id="MemcachedLock">type <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2224:2596#L54">MemcachedLock</a>
+			<h2 id="MemcachedLock">type <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2309:2696#L55">MemcachedLock</a>
 				<a class="permalink" href="index.html#MemcachedLock">&#xb6;</a>
 				
 				
@@ -234,7 +234,7 @@ err = lock.ReleaseLock(&#34;123&#34;, &#34;key1&#34;)
 </pre>
 
 			<pre>type MemcachedLock struct {
-    *<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/lock/">clock</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-components-go/lock/#Lock">Lock</a>
+    *<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-components-gox/lock/">clock</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-components-gox/lock/#Lock">Lock</a>
     <span class="comment">// contains filtered or unexported fields</span>
 }
 </pre>
@@ -249,7 +249,7 @@ err = lock.ReleaseLock(&#34;123&#34;, &#34;key1&#34;)
 
 			
 				
-				<h3 id="NewMemcachedLock">func <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2666:2704#L72">NewMemcachedLock</a>
+				<h3 id="NewMemcachedLock">func <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=2769:2807#L73">NewMemcachedLock</a>
 					<a class="permalink" href="index.html#NewMemcachedLock">&#xb6;</a>
 					
 					
@@ -265,17 +265,18 @@ NewMemcachedLock method are creates a new instance of this lock.
 
 			
 				
-				<h3 id="MemcachedLock.Close">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=6222:6279#L175">Close</a>
+				<h3 id="MemcachedLock.Close">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=6617:6695#L180">Close</a>
 					<a class="permalink" href="index.html#MemcachedLock.Close">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) Close(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) Close(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
 				<p>
 Close method are closes component and frees used resources.
 Parameters:
 </p>
-<pre>- correlationId 	(optional) transaction id to trace execution through call chain.
+<pre>- ctx context.Context
+- correlationId 	(optional) transaction id to trace execution through call chain.
 - callback 			callback function that receives error or nil no errors occured.
 </pre>
 
@@ -284,16 +285,17 @@ Parameters:
 				
 			
 				
-				<h3 id="MemcachedLock.Configure">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=3282:3343#L94">Configure</a>
+				<h3 id="MemcachedLock.Configure">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=3434:3516#L96">Configure</a>
 					<a class="permalink" href="index.html#MemcachedLock.Configure">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) Configure(config *<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/config/">cconf</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/config/#ConfigParams">ConfigParams</a>)</pre>
+				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) Configure(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, config *<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/config/">cconf</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/config/#ConfigParams">ConfigParams</a>)</pre>
 				<p>
 Configure method are configures component by passing configuration parameters.
 </p>
-<pre>- config    configuration parameters to be set.
+<pre>- ctx context.Context
+- config    configuration parameters to be set.
 </pre>
 
 				
@@ -301,7 +303,7 @@ Configure method are configures component by passing configuration parameters.
 				
 			
 				
-				<h3 id="MemcachedLock.IsOpen">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4667:4704#L120">IsOpen</a>
+				<h3 id="MemcachedLock.IsOpen">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4930:4967#L123">IsOpen</a>
 					<a class="permalink" href="index.html#MemcachedLock.IsOpen">&#xb6;</a>
 					
 					
@@ -317,17 +319,18 @@ Returns: true if the component has been opened and false otherwise.
 				
 			
 				
-				<h3 id="MemcachedLock.Open">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4921:4977#L128">Open</a>
+				<h3 id="MemcachedLock.Open">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=5220:5297#L132">Open</a>
 					<a class="permalink" href="index.html#MemcachedLock.Open">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) Open(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) Open(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
 				<p>
 / Open method are opens the component.
 Parameters:
 </p>
-<pre>- correlationId 	(optional) transaction id to trace execution through call chain.
+<pre>- ctx context.Context
+- correlationId 	(optional) transaction id to trace execution through call chain.
 </pre>
 <p>
 Retruns: error or nil no errors occured.
@@ -338,16 +341,17 @@ Retruns: error or nil no errors occured.
 				
 			
 				
-				<h3 id="MemcachedLock.ReleaseLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=7680:7755#L222">ReleaseLock</a>
+				<h3 id="MemcachedLock.ReleaseLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=8222:8318#L229">ReleaseLock</a>
 					<a class="permalink" href="index.html#MemcachedLock.ReleaseLock">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) ReleaseLock(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) ReleaseLock(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
 				<p>
 ReleaseLock method are releases prevously acquired lock by its key.
 </p>
-<pre>  - correlationId     (optional) transaction id to trace execution through call chain.
+<pre>  - ctx context.Context
+  - correlationId     (optional) transaction id to trace execution through call chain.
   - key               a unique lock key to release.
 Returns error or nil for success.
 </pre>
@@ -357,16 +361,17 @@ Returns error or nil for success.
 				
 			
 				
-				<h3 id="MemcachedLock.SetReferences">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4420:4486#L114">SetReferences</a>
+				<h3 id="MemcachedLock.SetReferences">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=4651:4738#L117">SetReferences</a>
 					<a class="permalink" href="index.html#MemcachedLock.SetReferences">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) SetReferences(references <a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/refer/">cref</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-go/pip-services3-commons-go/refer/#IReferences">IReferences</a>)</pre>
+				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) SetReferences(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, references <a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/refer/">cref</a>.<a href="http://localhost:6060/pkg/github.com/pip-services3-gox/pip-services3-commons-gox/refer/#IReferences">IReferences</a>)</pre>
 				<p>
 SetReferences method are sets references to dependent components.
 </p>
-<pre>- references 	references to locate the component dependencies.
+<pre>- ctx context.Context
+- references 	references to locate the component dependencies.
 </pre>
 
 				
@@ -374,18 +379,19 @@ SetReferences method are sets references to dependent components.
 				
 			
 				
-				<h3 id="MemcachedLock.TryAcquireLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=6962:7070#L196">TryAcquireLock</a>
+				<h3 id="MemcachedLock.TryAcquireLock">func (*MemcachedLock) <a href="http://localhost:6060/src/lock/MemcachedLock.go?s=7428:7557#L202">TryAcquireLock</a>
 					<a class="permalink" href="index.html#MemcachedLock.TryAcquireLock">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) TryAcquireLock(correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>, ttl <a href="http://localhost:6060/pkg/builtin/#int64">int64</a>) (result <a href="http://localhost:6060/pkg/builtin/#bool">bool</a>, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<pre>func (c *<a href="index.html#MemcachedLock">MemcachedLock</a>) TryAcquireLock(ctx <a href="http://localhost:6060/pkg/context/">context</a>.<a href="http://localhost:6060/pkg/context/#Context">Context</a>, correlationId <a href="http://localhost:6060/pkg/builtin/#string">string</a>, key <a href="http://localhost:6060/pkg/builtin/#string">string</a>, ttl <a href="http://localhost:6060/pkg/builtin/#int64">int64</a>) (result <a href="http://localhost:6060/pkg/builtin/#bool">bool</a>, err <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
 				<p>
 TryAcquireLock method are makes a single attempt to acquire a lock by its key.
 It returns immediately a positive or negative result.
 Parameters:
 </p>
-<pre>  - correlationId     (optional) transaction id to trace execution through call chain.
+<pre>  - ctx context.Context
+  - correlationId     (optional) transaction id to trace execution through call chain.
   - key               a unique lock key to acquire.
   - ttl               a lock timeout (time to live) in milliseconds.
 Returns: a lock result or error.
@@ -407,13 +413,13 @@ Returns: a lock result or error.
 
 
 <div id="footer">
-Build version go1.13.15.<br>
+Build version go1.18.5.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
 and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
-<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
-<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+<a href="https://golang.org/doc/tos.html">Terms of Service</a> |
+<a href="https://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
 </div>
 
 </div><!-- .container -->
