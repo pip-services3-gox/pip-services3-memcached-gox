@@ -5,17 +5,17 @@ This module is a part of the [Pip.Services](http://pipservices.org) polyglot mic
 The Memcached module contains the following components: MemcachedLock and MemcachedCache for working with locks and cache on the Memcached server.
 
 The module contains the following packages:
-- [**Build**](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/build) - a standard factory for constructing components
-- [**Cache**](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/cache) - cache Components in Memcached
-- [**Lock**](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/lock) - components of working with locks in Memcached
+- **Build** - a standard factory for constructing components
+- **Cache** - cache Components in Memcached
+- **Lock** - components of working with locks in Memcached
 
 <a name="links"></a> Quick links:
 
-* [Configuration](https://www.pipservices.org/recipies/configuration)
+* [Configuration](http://docs.pipservices.org/concepts/configuration/)
 * [API Reference](https://godoc.org/github.com/pip-services3-gox/pip-services3-memcached-gox/)
 * [Change Log](CHANGELOG.md)
-* [Get Help](https://www.pipservices.org/community/help)
-* [Contribute](https://www.pipservices.org/community/contribute)
+* [Get Help](http://docs.pipservices.org/get_help/)
+* [Contribute](http://docs.pipservices.org/contribute/)
 
 
 ## Use
