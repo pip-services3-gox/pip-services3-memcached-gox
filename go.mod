@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/bradfitz/gomemcache v0.0.0-20220106215444-fb4bf637b56d
-	github.com/pip-services3-gox/pip-services3-commons-gox v1.0.7
+	github.com/pip-services3-gox/pip-services3-commons-gox v1.0.8
 	github.com/pip-services3-gox/pip-services3-components-gox v1.0.7
 	github.com/stretchr/testify v1.8.0
 )

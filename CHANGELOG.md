@@ -1,5 +1,9 @@
 # Memcached components for Pip.Services in Golang Changelog
 
+## <a name="1.0.1"></a> 1.0.1 (2022-07-10) 
+
+- Updated dependencies
+
 ## <a name="1.0.0"></a> 1.0.0 (2022-07-10) 
        
 ### Features
