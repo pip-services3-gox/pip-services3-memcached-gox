@@ -101,6 +101,7 @@ func NewMemcachedCache[T any]() *MemcachedCache[T] {
 		//idle:   5000,
 		client:    nil,
 		convertor: cconv.NewDefaultCustomTypeJsonConvertor[T](),
+		logger:    *clog.NewCompositeLogger(),
 	}
 	return c
 }
