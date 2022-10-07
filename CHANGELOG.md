@@ -1,6 +1,6 @@
 # Memcached components for Pip.Services in Golang Changelog
 
-## <a name="1.0.0"></a> 1.0.0 (2020-03-11) 
+## <a name="1.0.0"></a> 1.0.0 (2022-07-10) 
        
 ### Features
 * **build** standard factory for constructing components
